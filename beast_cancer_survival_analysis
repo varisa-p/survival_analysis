@@ -76,38 +76,38 @@ for (i in 1:length(columns_num)) {
 ## Data Preprocessing
 
 # This analysis aim to determine whether breast cancer patients 
-# who received hormonal therapy (HRT) have different 
+# who received hormonal treatment have different 
 # recurrence-free survival outcomes compared to those who did not.
 
-# Assign new variable from hormon variable to Expose to HRT and controls to Non-Expose 
-gbsg$hrt =ifelse(gbsg$hormon== "0","Non-Expose","Expose to HRT")
-gbsg$hrt =factor(gbsg$hrt)
-gbsg$hrt <- relevel(gbsg$hrt, ref = "Non-Expose")
+# Assign new variable from hormon variable to Expose to hor_t and controls to Non-Expose 
+gbsg$hor_t =ifelse(gbsg$hormon== "0","Non-Expose","Expose to Hormonal treatment")
+gbsg$hor_t =factor(gbsg$hor_t)
+gbsg$hor_t <- relevel(gbsg$hor_t, ref = "Non-Expose")
 
 # Assign new time variable to years
 gbsg$rfsyear <- gbsg$rfstime / 365.25
 
 ## Descriptive analysis
 
-# Create table to compare baseline characteristics of expose and non-expose to HRT
+# Create table to compare baseline characteristics of expose and non-expose to hormone treatment
 
 column_variable <- c("age","meno","grade", "size", "nodes", "pgr","er")
 tab <- CreateTableOne(vars = column_variable,
-               strata = c("hrt"), data = gbsg, factorVars = c("grade","meno"))
+               strata = c("hor_t"), data = gbsg, factorVars = c("grade","meno"))
 print(tab, nonnormal = columns_num, formatOptions = list(big.mark = ","))
 
 # Two factors (age, menopause) are significantly different between 
-# Expose to HRT and non-expose group 
+# Expose to hormonal treatment and non-expose group 
 
 ##Survival analysis
 
 ## Kaplan-Meier Curve
-# Visualize the survival curves for the "Expose to HRT" and "Non-Expose" groups.
+# Visualize the survival curves for the "Expose to hormonal treatment" and "Non-Expose" groups.
 
-fit <- survfit(Surv(rfsyear, status) ~ hrt, data = gbsg)
+fit <- survfit(Surv(rfsyear, status) ~ hor_t, data = gbsg)
 ggsurvplot(fit, data = gbsg, title = "Recurrence or Death",pval = TRUE, 
             xlab = "Time in years", break.x.by = 2, 
-           legend = c(0.3, 0.4), legend.title = "", legend.lab = c("Expose to HRT", "Non-Expose")
+           legend = c(0.3, 0.4), legend.title = "", legend.lab = c("Expose to Hormonal treatment", "Non-Expose")
 )
 
 ## Hazard Ratios: Cox regression
