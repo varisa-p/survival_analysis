@@ -70,7 +70,7 @@ for (i in 1:length(columns_num)) {
   # Plot histogram of x
   hist(x,
        main = paste("Histogram of", col),
-       xlab = "Values")  # Adjust xlim as needed for binary data
+       xlab = "Values")  
 }
 # All numeric variables are not normally distributed
 ## Data Preprocessing
